@@ -10,7 +10,42 @@ use Hyperf\HttpServer\Annotation\AutoController;
 
 class BaseService 
 {
+  public function elkCreateBulk()
+  {
+        $client = ClientBuilder::create()->setHosts(['172.17.0.8:9200'])->build();
 
+        $params = ['body' => []];
+
+        $params['body'][] = [
+            'index' => [
+                '_index' => 'movies',
+                '_id' => '1',
+            ]
+        ];
+
+        $params['body'][] = [
+            'title' => 'Inception',
+            'year' => 2010,
+        ];
+
+        // Document 2
+        $params['body'][] = [
+            'index' => [
+                '_index' => 'movies',
+                '_id' => '2',
+            ]
+        ];
+
+        $params['body'][] = [
+            'title' => 'The Dark Knight',
+            'year' => 2008,
+        ];
+
+        // Send the bulk request
+        $response = $client->bulk($params);
+
+        return $response;
+  }
   public function elkCreate(){
     $client = ClientBuilder::create()->setHosts(['172.17.0.8:9200'])->build();
     $params = [

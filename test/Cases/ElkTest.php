@@ -31,6 +31,14 @@ class ElkTest extends HttpTestCase
     {
       $service = make(BaseService::class);
       $rep= $service->elkSearch();
+      $this->assertSame(0, 0);
+
+    }
+
+    public function testSearchBulk()
+    {
+      $service = make(BaseService::class);
+      $rep= $service->elkCreateBulk();
       print_r($rep);
       $this->assertSame(0, 0);
 
