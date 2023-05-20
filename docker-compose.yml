@@ -1,0 +1,86 @@
+version: '3'
+services:
+  hyperf:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www
+    ports:
+      - "9511:9501"
+    depends_on:
+      - mysql
+      - redis
+      - elasticsearch
+      - logstash
+      - kibana
+    environment:
+      - APP_ENV=local
+    user: root
+    privileged: true
+    stdin_open: true
+    restart: always
+    networks:
+      - mynetwork
+
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=hyperf
+      - MYSQL_USER=hyperf
+      - MYSQL_PASSWORD=hyperf
+      - MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password
+    ports:
+      - "3366:3306"
+    networks:
+      - mynetwork
+        
+  redis:
+    image: redis:5.0
+    ports:
+      - "6399:6379"
+    networks:
+      - mynetwork
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    environment:
+      - "discovery.type=single-node"
+    networks:
+      - mynetwork
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.16.1
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./runtime/logs:/usr/share/logstash/data/logs
+    ports:
+      - "5001:5000"
+    depends_on:
+      - elasticsearch
+    networks:
+      - mynetwork
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.16.1
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - mynetwork
+
+volumes:
+  mysql_data:
+  redis_data:
+  esdata:
+
+networks:
+  mynetwork:
