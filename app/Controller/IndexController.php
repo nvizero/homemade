@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 /**
  * This file is part of Hyperf.
@@ -32,8 +31,11 @@ class IndexController extends AbstractController
             $builder->setHandler($handler);
         }
 
-        $client = $builder->setHosts(['http://172.17.0.8:9200'])->build();
-
+        $client = ClientBuilder::create() 
+          ->setHosts(['elasticsearch:9200'])
+          ->setBasicAuthentication('yourusername', 'yourpassword')
+          ->build();
+        //$client = $builder->setHosts(['http://172.17.0.8:9200'])->build();
         $info = $client->info();
         return [
             'method' => $method,

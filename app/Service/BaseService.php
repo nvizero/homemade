@@ -12,17 +12,17 @@ class BaseService
 {
   public function elkCreateBulk()
   {
-        $client = ClientBuilder::create()->setHosts(['172.17.0.8:9200'])->build();
-
+    $client = ClientBuilder::create() 
+          ->setHosts(['elasticsearch:9200'])
+          ->setBasicAuthentication('yourusername', 'yourpassword')
+          ->build();
         $params = ['body' => []];
-
         $params['body'][] = [
             'index' => [
                 '_index' => 'movies',
                 '_id' => '1',
             ]
         ];
-
         $params['body'][] = [
             'title' => 'Inception',
             'year' => 2010,
@@ -47,7 +47,10 @@ class BaseService
         return $response;
   }
   public function elkCreate(){
-    $client = ClientBuilder::create()->setHosts(['172.17.0.8:9200'])->build();
+    $client = ClientBuilder::create() 
+          ->setHosts(['elasticsearch:9200'])
+          ->setBasicAuthentication('yourusername', 'yourpassword')
+          ->build();
     $params = [
         'index' => 'shakespeare',
         'id'    => '1',
@@ -61,9 +64,7 @@ class BaseService
             'text_entry' => "Who's there?"
         ]
     ];
-
     $response = $client->index($params);
-
     return $response;
   }
 
@@ -71,8 +72,11 @@ class BaseService
    * For search
    */
   public function elkSearch(){
-    $client = ClientBuilder::create()->setHosts(['172.17.0.8:9200'])->build();
 
+    $client = ClientBuilder::create() 
+          ->setHosts(['elasticsearch:9200'])
+          ->setBasicAuthentication('yourusername', 'yourpassword')
+          ->build();
     $params = [
         'index' => 'shakespeare',
         'body'  => [
@@ -83,9 +87,7 @@ class BaseService
                 ]
             ]
     ];
-
     $response = $client->search($params);
-
     return $response;
   }
 }
