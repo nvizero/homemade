@@ -1,9 +1,8 @@
 filebeat.inputs:
 - type: log
+  enabled: true
   paths:
-    - /usr/share/filebeat/logs/*.log
+    - ./runtime/logs/*.log
 
-output.elasticsearch:
-  hosts: ["elasticsearch:9200"]
-  username: "username"
-  password: "password"    
+output.logstash:
+  hosts: ["logstash:5044"]
