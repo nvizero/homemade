@@ -1,0 +1,4 @@
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.16.1
+RUN bin/elasticsearch-plugin install -b https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.16.1/elasticsearch-analysis-ik-7.16.1.zip
+
+
