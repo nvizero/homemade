@@ -14,6 +14,7 @@ services:
       - elasticsearch
       - logstash
       - kibana
+      - filebeat
     environment:
       - APP_ENV=local
     user: root
@@ -55,6 +56,14 @@ services:
       - "ELASTIC_USERNAME=username"    
       - "ELASTIC_PASSWORD=password"
       - "discovery.type=single-node"
+    networks:
+      - mynetwork
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.16.1
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./runtime/logs:/usr/share/filebeat/logs
     networks:
       - mynetwork
 
