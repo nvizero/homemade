@@ -9,15 +9,33 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 namespace App\Controller;
-
 use Elasticsearch\ClientBuilder;
 use Hyperf\Guzzle\RingPHP\PoolHandler;
 use Swoole\Coroutine;
-
+use App\Service\UserService;
+use Hyperf\Di\Annotation\Inject;
+use Hyperf\Metric\Contract\MetricFactoryInterface;
 class IndexController extends AbstractController
 {
+
+    /**
+     * @var UserService
+     */
+    #[Inject]
+    private $userService;
+    /**
+     * @var MetricFactoryInterface
+     */
+    #[Inject]
+    private $metricFactory;
+
     public function index()
     {
+
+        $this->userService->createUser();
+        $counter = $this->metricFactory->makeCounter('order_created', ['order_type']);
+        $counter->with("index")->add(1);
+
         $user = $this->request->input('user', 'Hyperf');
         $method = $this->request->getMethod();
 
