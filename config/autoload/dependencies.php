@@ -13,4 +13,5 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Hyperf\HttpMessage\Stream\Factory\StreamFactory;
 return [
   StreamFactoryInterface::class => StreamFactory::class,
+  Prometheus\Storage\Adapter::class => Hyperf\Metric\Adapter\Prometheus\RedisStorageFactory::class,
 ];
