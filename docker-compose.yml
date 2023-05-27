@@ -53,8 +53,6 @@ services:
     ports:
       - "9200:9200"
     environment:
-      - "ELASTIC_USERNAME=username"    
-      - "ELASTIC_PASSWORD=a123456"
       - "discovery.type=single-node"
     networks:
       - mynetwork
@@ -71,7 +69,7 @@ services:
       - mynetwork
 
   loki:
-    image: grafana/loki:2.4.1
+    image: grafana/loki:latest
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
@@ -81,7 +79,7 @@ services:
       - mynetwork
 
   promtail:
-    image: grafana/promtail:2.4.1
+    image: grafana/promtail:latest
     volumes:
       - ./runtime/logs:/var/logs
       - ./promtail-config.yaml:/etc/promtail/config.yml

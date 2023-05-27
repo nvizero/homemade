@@ -37,7 +37,7 @@ class MyListener implements ListenerInterface
           \Longman\TelegramBot\Request::sendMessage([
               'chat_id' => $chat_id,
               'text'    => env("APP_NAME").' - restart '.date("Y-m-d H:i:s").' 😜 ...',
-          ]);          // Handle telegram webhook request
+          ]);          
     
       } catch (Longman\TelegramBot\Exception\TelegramException $e) {
           // Silence is golden!
