@@ -1,0 +1,8 @@
+{
+  "apps":[
+    {
+      "args":"start",
+      "script":"bin/hyperf.php"
+    }
+  ]
+}

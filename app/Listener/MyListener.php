@@ -7,11 +7,8 @@ namespace App\Listener;
 use Hyperf\Event\Annotation\Listener;
 use Psr\Container\ContainerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
-use Hyperf\Framework\Event\BootApplication;
 use Hyperf\Framework\Event\MainWorkerStart;
 use Longman\TelegramBot\Telegram;
-use Longman\TelegramBot\Request;
-
 #[Listener]
 class MyListener implements ListenerInterface
 {
@@ -22,7 +19,7 @@ class MyListener implements ListenerInterface
     public function listen(): array
     {
         return [
-            BootApplication::class,
+            MainWorkerStart::class,
         ];
     }
 
@@ -39,7 +36,7 @@ class MyListener implements ListenerInterface
           \Longman\TelegramBot\Request::initialize($telegram);
           \Longman\TelegramBot\Request::sendMessage([
               'chat_id' => $chat_id,
-              'text'    => 'Your utf8 text 😜 ...',
+              'text'    => env("APP_NAME").' - restart utf8 text 😜 ...',
           ]);          // Handle telegram webhook request
     
       } catch (Longman\TelegramBot\Exception\TelegramException $e) {
